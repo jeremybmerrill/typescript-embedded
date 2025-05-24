@@ -9,9 +9,9 @@
   },
   "type": "module",
   "files": [
-    "/dist/index.js",
-    "/dist/index.mjs",
-    "/dist/index.d.ts"
+    "dist/index.js",
+    "dist/index.mjs",
+    "dist/index.d.ts"
   ],
   "scripts": {
     "test": "tsc -noEmit -p tsconfig-test.json && jest --useStderr --runInBand --detectOpenHandles",
@@ -39,7 +39,7 @@
   "dependencies": {
     "adm-zip": "^0.5.10",
     "tar": "^7.4.0",
-    "weaviate-client": "^3.0.8"
+    "weaviate-client": "^3.5.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",
