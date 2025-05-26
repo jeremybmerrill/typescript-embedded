@@ -6,6 +6,7 @@ interface EmbeddedOptionsConfig {
     env?: object;
     version?: string;
     binaryUrl?: string;
+    persistenceDataPath?: string;
 }
 declare class EmbeddedOptions {
     binaryPath: string;

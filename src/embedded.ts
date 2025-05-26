@@ -20,6 +20,7 @@ export interface EmbeddedOptionsConfig {
   env?: object;
   version?: string;
   binaryUrl?: string;
+  persistenceDataPath?: string;
 }
 
 export class EmbeddedOptions {
@@ -40,7 +41,9 @@ export class EmbeddedOptions {
     this.binaryUrl = cfg?.binaryUrl;
     this.version = this.parseVersion(cfg);
     this.binaryPath = this.getBinaryPath(cfg);
-    this.persistenceDataPath = this.getPersistenceDataPath();
+    this.persistenceDataPath = cfg?.persistenceDataPath
+      ? cfg?.persistenceDataPath
+      : this.getPersistenceDataPath();
     this.env = this.parseEnv(cfg);
   }
 
