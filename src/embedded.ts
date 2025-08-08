@@ -21,7 +21,7 @@ export interface EmbeddedOptionsConfig {
   version?: string;
   binaryUrl?: string;
   persistenceDataPath?: string;
-  binaryPath: string;
+  binaryPath?: string;
 }
 
 export class EmbeddedOptions {
