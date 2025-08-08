@@ -21,6 +21,7 @@ export interface EmbeddedOptionsConfig {
   version?: string;
   binaryUrl?: string;
   persistenceDataPath?: string;
+  binaryPath: string;
 }
 
 export class EmbeddedOptions {
@@ -40,7 +41,7 @@ export class EmbeddedOptions {
     this.port = cfg && cfg.port ? cfg.port : 6789;
     this.binaryUrl = cfg?.binaryUrl;
     this.version = this.parseVersion(cfg);
-    this.binaryPath = this.getBinaryPath(cfg);
+    this.binaryPath = cfg && cfg.binaryPath ? cfg.binaryPath : this.getBinaryPath(cfg);
     this.persistenceDataPath = cfg?.persistenceDataPath
       ? cfg?.persistenceDataPath
       : this.getPersistenceDataPath();
