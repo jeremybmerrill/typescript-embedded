@@ -182,7 +182,7 @@ export class EmbeddedDB {
           {
             headers: {
               'User-Agent': 'Weaviate-Embedded-DB',
-              authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+              ...(process.env.GITHUB_TOKEN && { authorization: `Bearer ${process.env.GITHUB_TOKEN}` }),
             },
           },
           (resp) => {
@@ -254,7 +254,7 @@ export class EmbeddedDB {
         {
           headers: {
             'User-Agent': 'Weaviate-Embedded-DB',
-            authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+            ...(process.env.GITHUB_TOKEN && { authorization: `Bearer ${process.env.GITHUB_TOKEN}` }),
           },
         },
         (resp) => {
@@ -270,7 +270,7 @@ export class EmbeddedDB {
               {
                 headers: {
                   'User-Agent': 'Weaviate-Embedded-DB',
-                  authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+                  ...(process.env.GITHUB_TOKEN && { authorization: `Bearer ${process.env.GITHUB_TOKEN}` }),
                 },
               },
               (resp) => {
