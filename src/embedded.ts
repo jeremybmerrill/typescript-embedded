@@ -179,7 +179,12 @@ export class EmbeddedDB {
       if (this.options.version == 'latest') {
         get(
           'https://api.github.com/repos/weaviate/weaviate/releases/latest',
-          { headers: { 'User-Agent': 'Weaviate-Embedded-DB' } },
+          {
+            headers: {
+              'User-Agent': 'Weaviate-Embedded-DB',
+              authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+            },
+          },
           (resp) => {
             let body = '';
             resp.on('data', (chunk: string) => {
@@ -244,34 +249,52 @@ export class EmbeddedDB {
 
     const file = fs.createWriteStream(path);
     return new Promise((resolve, reject) => {
-      get(url, (resp) => {
-        if (resp.statusCode == 200) {
-          resp.pipe(file);
-          file.on('finish', () => {
-            file.close();
-            resolve(path);
-          });
-        } else if (resp.statusCode == 302 && resp.headers.location) {
-          get(resp.headers.location, (resp) => {
+      get(
+        url,
+        {
+          headers: {
+            'User-Agent': 'Weaviate-Embedded-DB',
+            authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+          },
+        },
+        (resp) => {
+          if (resp.statusCode == 200) {
             resp.pipe(file);
             file.on('finish', () => {
               file.close();
               resolve(path);
             });
-          });
-        } else if (resp.statusCode == 404) {
-          reject(
-            new Error(
-              `failed to download binary: not found. ` +
-                `are you sure Weaviate version ${this.options.version} exists? ` +
-                `note that embedded db for linux is only supported for versions >= 1.18.0, ` +
-                `and embedded db for mac is only supported for versions >= 1.19.8`
-            )
-          );
-        } else {
-          reject(new Error(`failed to download binary: unexpected status code: ${resp.statusCode}`));
+          } else if (resp.statusCode == 302 && resp.headers.location) {
+            get(
+              resp.headers.location,
+              {
+                headers: {
+                  'User-Agent': 'Weaviate-Embedded-DB',
+                  authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+                },
+              },
+              (resp) => {
+                resp.pipe(file);
+                file.on('finish', () => {
+                  file.close();
+                  resolve(path);
+                });
+              }
+            );
+          } else if (resp.statusCode == 404) {
+            reject(
+              new Error(
+                `failed to download binary: not found. ` +
+                  `are you sure Weaviate version ${this.options.version} exists? ` +
+                  `note that embedded db for linux is only supported for versions >= 1.18.0, ` +
+                  `and embedded db for mac is only supported for versions >= 1.19.8`
+              )
+            );
+          } else {
+            reject(new Error(`failed to download binary: unexpected status code: ${resp.statusCode}`));
+          }
         }
-      }).on('error', (err) => {
+      ).on('error', (err) => {
         fs.unlinkSync(path);
         reject(new Error(`failed to download binary: ${err}`));
       });
