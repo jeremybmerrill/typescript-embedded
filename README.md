@@ -1,3 +1,11 @@
+
+# Jeremy's forked version of embedded Weaviate
+
+- compatibility with Weaviate's Typescript V3 Client (to accomodate using libraries that use that Weaviate's latest version, like llamaindex)
+- let users set persistanceDataPath (to accomodate persisting data in a client application's data directory)
+- let users set binaryPath (to accomodate using a code-signed binary in an application)
+- fetch weaviate binary using GITHUB_TOKEN env var if set (to accommodate fetching that binary in a github action)
+
 # Weaviate TypeScript EmbeddedDB <img alt='Weaviate logo' src='https://weaviate.io/img/site/weaviate-logo-light.png' width='148' align='right' />
 
 An embedded Weaviate database with TypeScript client interface, available for Linux and Mac
